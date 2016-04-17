@@ -36,8 +36,13 @@ function errorHandler(err) {
 }
 
 gulp.task('clean:js', function() {
-    return del.sync(PRODUCTION_DIR.concat('**/*.js'));
+    return del.sync(PRODUCTION_DIR.concat('js/*.js'));
 });
+
+gulp.task('clean:app', function() {
+    return del.sync(PRODUCTION_DIR.concat('app/*.js'));
+});
+
 
 gulp.task('clean:css', function() {
     return del.sync([PRODUCTION_DIR.concat('css/**/.css')]);
@@ -124,7 +129,7 @@ gulp.task('watch', function() {
     livereload.listen();
     gulp.watch(DEVELOPMENT_DIR.concat('images/**.*'), function() {runSequence('clean:images','images')});
     gulp.watch(DEVELOPMENT_DIR.concat('js/**.js'), function() {runSequence('clean:js','js')});
-    gulp.watch(DEVELOPMENT_DIR.concat('app/**.ts'), function() {runSequence('clean:js','ts')});
+    gulp.watch(DEVELOPMENT_DIR.concat('app/**.ts'), function() {runSequence('clean:app','ts')});
     gulp.watch(DEVELOPMENT_DIR.concat('sass/**/*.scss'), function() {runSequence('clean:css','style')});
     gulp.watch(DEVELOPMENT_DIR.concat('*.html'), ['html']);
 });
