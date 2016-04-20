@@ -1,7 +1,7 @@
 /**
  * Created by ioanistrate on 4/13/16.
  */
-
+'use strict';
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
     livereload = require('gulp-livereload'),
@@ -36,11 +36,15 @@ function errorHandler(err) {
 }
 
 gulp.task('clean:js', function() {
-    return del.sync(PRODUCTION_DIR.concat('js/*.js'));
+    return del.sync(PRODUCTION_DIR.concat('js/**/*.js'));
+});
+
+gulp.task('clean:html', function() {
+    return del.sync(PRODUCTION_DIR.concat('**/*.html'));
 });
 
 gulp.task('clean:app', function() {
-    return del.sync(PRODUCTION_DIR.concat('app/*.js'));
+    return del.sync(PRODUCTION_DIR.concat('app/**/*.js'));
 });
 
 
@@ -49,12 +53,12 @@ gulp.task('clean:css', function() {
 });
 
 gulp.task('clean:images', function() {
-    return del.sync(PRODUCTION_DIR.concat('images/*.*'));
+    return del.sync(PRODUCTION_DIR.concat('images/**/*.*'));
 });
 
 //run all of the above
 gulp.task('clean', function() {
-    runSequence('clean:css', 'clean:js', 'clean:images');
+    return del.sync(PRODUCTION_DIR.concat('*'));
 });
 
 gulp.task('html', function() {
@@ -129,9 +133,9 @@ gulp.task('watch', function() {
     livereload.listen();
     gulp.watch(DEVELOPMENT_DIR.concat('images/**.*'), function() {runSequence('clean:images','images')});
     gulp.watch(DEVELOPMENT_DIR.concat('js/**.js'), function() {runSequence('clean:js','js')});
-    gulp.watch(DEVELOPMENT_DIR.concat('app/**.ts'), function() {runSequence('clean:app','ts')});
+    gulp.watch(DEVELOPMENT_DIR.concat('app/**/*.ts'), function() {runSequence('clean:app','ts')});
     gulp.watch(DEVELOPMENT_DIR.concat('sass/**/*.scss'), function() {runSequence('clean:css','style')});
-    gulp.watch(DEVELOPMENT_DIR.concat('*.html'), ['html']);
+    gulp.watch(DEVELOPMENT_DIR.concat('**/*.html'), ['html']);
 });
 
 gulp.task('default', function() {

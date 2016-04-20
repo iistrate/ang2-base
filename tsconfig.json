@@ -8,18 +8,11 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "outDir": "./app"
+    "outDir": "./production/app"
   },
-  "filesGlob": [
-    "./development/**/*.ts",
-    "!./node_modules/**/*.ts"
-  ],
   "exclude": [
     "node_modules",
-    "development/typings/main",
-    "development/typings/main.d.ts"
-  ],
-  "atom": {
-    "rewriteTsconfig": true
-  }
+    "typings/main",
+    "typings/main.d.ts"
+  ]
 }
