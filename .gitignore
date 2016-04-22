@@ -6,3 +6,4 @@ development/**/*.css.map
 typings
 
 .sass-cache
+.idea
