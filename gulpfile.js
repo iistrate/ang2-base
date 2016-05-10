@@ -22,6 +22,7 @@ var gulp = require('gulp'),
     csso = require('gulp-csso'),
     autoprefixer = require('gulp-autoprefixer'),
     sourcemaps = require('gulp-sourcemaps'),
+	postcss    = require('gulp-postcss'),
 
     //Directories
     PRODUCTION_DIR = 'production/',
@@ -98,6 +99,21 @@ gulp.task('ts', function() {
         .pipe(livereload());
 });
 
+gulp.task('dependencies', function() {
+    gulp.src([
+            "node_modules/es6-shim/es6-shim.min.js",
+            "node_modules/systemjs/dist/system-polyfills.js",
+            "node_modules/angular2/es6/dev/src/testing/shims_for_IE.js",
+            "node_modules/angular2/bundles/angular2-polyfills.js",
+            "node_modules/systemjs/dist/system.src.js",
+            "node_modules/rxjs/bundles/Rx.js",
+            "node_modules/angular2/bundles/angular2.dev.js",
+            "node_modules/angular2/bundles/router.dev.js",
+            "node_modules/angular2/bundles/http.js",
+            "node_modules/flexibility/dist/flexibility.js"
+        ])
+        .pipe(gulp.dest(PRODUCTION_DIR.concat('libs')))
+});
 
 gulp.task('style', function() {
     gulp.src(DEVELOPMENT_DIR.concat('sass/**/*.scss'))
@@ -106,13 +122,14 @@ gulp.task('style', function() {
         }))
         .pipe(compass({
             config_file: DEVELOPMENT_DIR.concat('sass/config.rb'),
-            image: DEVELOPMENT_DIR.concat('images'),
+            image: PRODUCTION_DIR.concat('images'),
             css: PRODUCTION_DIR.concat('css'),
             sass: DEVELOPMENT_DIR.concat('sass'),
             font: DEVELOPMENT_DIR.concat('typography/fonts')
         }))
         //.pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(autoprefixer({browsers: ['last 2 versions']}))
+        .pipe(postcss([ require('postcss-flexibility') ]))
+        .pipe(autoprefixer({browsers: ['last 2 version', 'ie 9-11']}))
         .pipe(csso())
         //.pipe(sourcemaps.write())
         .pipe(gulp.dest(PRODUCTION_DIR.concat('css')))
@@ -140,5 +157,5 @@ gulp.task('watch', function() {
 
 gulp.task('default', function() {
     //run clean, (build css,js,images)
-    runSequence('clean', ['html', 'js', 'ts', 'style', 'images']);
+    runSequence('clean', ['html', 'js', 'ts', 'style', 'images', 'dependencies']);
 });
