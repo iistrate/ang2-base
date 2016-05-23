@@ -48,7 +48,6 @@ gulp.task('clean:app', function() {
     return del.sync(PRODUCTION_DIR.concat('app/**/*.js'));
 });
 
-
 gulp.task('clean:css', function() {
     return del.sync([PRODUCTION_DIR.concat('css/**/.css')]);
 });
@@ -59,7 +58,7 @@ gulp.task('clean:images', function() {
 
 //run all of the above
 gulp.task('clean', function() {
-    return del.sync(PRODUCTION_DIR.concat('*'));
+    runSequence(['clean:html', 'clean:js', 'clean:app', 'clean:css', 'clean:images']);
 });
 
 gulp.task('html', function() {
@@ -78,13 +77,13 @@ gulp.task('js', function() {
         .pipe(plumber({
             handleError: errorHandler
         }))
-        .pipe(sourcemaps.init())
-        .pipe(babel({
-            presets: ['es2015']
-        }))
-        .pipe(concat('script.js'))
-        .pipe(uglify())
-        .pipe(sourcemaps.write())
+        //.pipe(sourcemaps.init())
+        //.pipe(babel({
+        //    presets: ['es2015']
+        //}))
+        //.pipe(concat('script.js'))
+        //.pipe(uglify())
+        //.pipe(sourcemaps.write())
 
         .pipe(gulp.dest(PRODUCTION_DIR.concat('js')))
         .pipe(livereload());
@@ -102,9 +101,19 @@ gulp.task('ts', function() {
 gulp.task('dependencies', function() {
     gulp.src([
             "node_modules/zone.js/dist/zone.js",
-            "node_modules/typescript/lib/typescript.js",
             "node_modules/reflect-metadata/Reflect.js",
             "node_modules/systemjs/dist/system.src.js",
+
+            "node_modules/es6-shim/es6-shim.min.js",
+
+            "node_modules/rxjs/bundles/Rx.umd.js",
+
+            "node_modules/@angular/core/core.umd.js",
+            "node_modules/@angular/common/common.umd.js",
+            "node_modules/@angular/compiler/compiler.umd.js",
+            "node_modules/@angular/router/router.umd.js",
+            "node_modules/@angular/platform-browser/platform-browser.umd.js",
+            "node_modules/@angular/platform-browser-dynamic/platform-browser-dynamic.umd.js"
         ])
         .pipe(gulp.dest(PRODUCTION_DIR.concat('libs')))
 });
