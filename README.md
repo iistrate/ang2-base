@@ -1,9 +1,10 @@
 Angular 2 starter
+=================
 
-To get started simply run -> npm install
+Getting started
+---------------
 
-Scripts
-
-gulp -> builds out production dir
-gulp watch -> watches for changes  (Required: Livereload for Chrome/Firefox)
-
+ + $ npm install  - (installs typings after install is run)
+ + $ npm build    - (builds initial production folder)
+ + $ npm serve    - (opens up your browser on localhost 3000 and starts httpster)
+ + $ npm dev      - (runs gulp and gulp watch [Required: Livereload for Chrome/Firefox])
